@@ -1,3 +1,3 @@
-module github.com/cnewkirk/opennms-api-client-go
+module github.com/cnewkirk/go-opennms
 
 go 1.24
