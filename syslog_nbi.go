@@ -16,8 +16,8 @@ func (c *Client) GetSyslogNbiConfig(ctx context.Context) (map[string]any, error)
 }
 
 // GetSyslogNbiStatus returns the syslog NBI forwarding status.
-func (c *Client) GetSyslogNbiStatus(ctx context.Context) (map[string]any, error) {
-	return c.getObject(ctx, syslogNbiPath+"/status", nil, false)
+func (c *Client) GetSyslogNbiStatus(ctx context.Context) (string, error) {
+	return asString(c.get(ctx, syslogNbiPath+"/status", nil, false))
 }
 
 // SetSyslogNbiStatus enables (true) or disables (false) syslog NBI

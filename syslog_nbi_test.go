@@ -12,10 +12,6 @@ const syslogNbiConfigJSON = `{
 	"destinations": []
 }`
 
-const syslogNbiStatusJSON = `{
-	"enabled": false
-}`
-
 const syslogNbiDestinationJSON = `{
 	"name": "siem",
 	"host": "10.0.0.2",
@@ -42,13 +38,13 @@ func TestGetSyslogNbiConfig(t *testing.T) {
 
 func TestGetSyslogNbiStatus(t *testing.T) {
 	mux, c := newTestClient(t)
-	handleJSON(mux, "GET "+v1Path+"/config/syslog-nbi/status", syslogNbiStatusJSON)
+	handleText(mux, "GET "+v1Path+"/config/syslog-nbi/status", "false")
 	result, err := c.GetSyslogNbiStatus(t.Context())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result["enabled"] != false {
-		t.Errorf("enabled = %v, want false", result["enabled"])
+	if result != "false" {
+		t.Errorf("status = %q, want false", result)
 	}
 }
 

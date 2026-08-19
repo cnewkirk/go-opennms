@@ -16,8 +16,8 @@ func (c *Client) GetSnmptrapNbiConfig(ctx context.Context) (map[string]any, erro
 }
 
 // GetSnmptrapNbiStatus returns the SNMP trap NBI forwarding status.
-func (c *Client) GetSnmptrapNbiStatus(ctx context.Context) (map[string]any, error) {
-	return c.getObject(ctx, snmptrapNbiBase+"/status", nil, false)
+func (c *Client) GetSnmptrapNbiStatus(ctx context.Context) (string, error) {
+	return asString(c.get(ctx, snmptrapNbiBase+"/status", nil, false))
 }
 
 // SetSnmptrapNbiStatus enables or disables SNMP trap NBI forwarding.

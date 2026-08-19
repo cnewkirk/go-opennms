@@ -21,14 +21,13 @@ const credentialListJSON = `{
 
 func TestGetCredentials(t *testing.T) {
 	mux, c := newTestClient(t)
-	handleJSON(mux, "GET "+v1Path+"/scv", credentialListJSON)
+	handleJSON(mux, "GET "+v1Path+"/scv", `["my-device", "router-admin"]`)
 	result, err := c.GetCredentials(t.Context())
 	if err != nil {
 		t.Fatal(err)
 	}
-	credential := result["credential"].([]any)[0].(map[string]any)
-	if credential["alias"] != "my-device" {
-		t.Errorf("alias = %v, want my-device", credential["alias"])
+	if result[0] != "my-device" {
+		t.Errorf("alias = %v, want my-device", result[0])
 	}
 }
 

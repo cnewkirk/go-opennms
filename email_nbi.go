@@ -15,8 +15,8 @@ func (c *Client) GetEmailNbiConfig(ctx context.Context) (map[string]any, error) 
 }
 
 // GetEmailNbiStatus returns the email NBI forwarding status.
-func (c *Client) GetEmailNbiStatus(ctx context.Context) (map[string]any, error) {
-	return c.getObject(ctx, emailNbiBase+"/status", nil, false)
+func (c *Client) GetEmailNbiStatus(ctx context.Context) (string, error) {
+	return asString(c.get(ctx, emailNbiBase+"/status", nil, false))
 }
 
 // SetEmailNbiStatus enables or disables email NBI forwarding.

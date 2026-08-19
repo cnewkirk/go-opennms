@@ -109,8 +109,8 @@ func (c *Client) GetFlowCount(ctx context.Context) (int, error) {
 
 // GetFlowExporters returns basic information for all exporter nodes
 // that have flows.
-func (c *Client) GetFlowExporters(ctx context.Context) (map[string]any, error) {
-	return c.getObject(ctx, "flows/exporters", nil, false)
+func (c *Client) GetFlowExporters(ctx context.Context) ([]any, error) {
+	return c.getList(ctx, "flows/exporters", nil, false)
 }
 
 // GetFlowExporter returns details about a specific flow exporter

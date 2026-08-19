@@ -19,8 +19,6 @@ const snmptrapNbiConfigJSON = `{
 	"trapsinks": [` + snmptrapNbiTrapsinkJSON + `]
 }`
 
-const snmptrapNbiStatusJSON = `{"enabled": true}`
-
 const snmptrapNbiTrapsinkListJSON = `{"trapsink": [` + snmptrapNbiTrapsinkJSON + `]}`
 
 func TestGetSnmptrapNbiConfig(t *testing.T) {
@@ -37,14 +35,13 @@ func TestGetSnmptrapNbiConfig(t *testing.T) {
 
 func TestGetSnmptrapNbiStatus(t *testing.T) {
 	mux, c := newTestClient(t)
-	handleJSON(mux, "GET "+v1Path+"/config/snmptrap-nbi/status",
-		snmptrapNbiStatusJSON)
+	handleText(mux, "GET "+v1Path+"/config/snmptrap-nbi/status", "true")
 	result, err := c.GetSnmptrapNbiStatus(t.Context())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result["enabled"] != true {
-		t.Errorf("enabled = %v, want true", result["enabled"])
+	if result != "true" {
+		t.Errorf("status = %q, want true", result)
 	}
 }
 

@@ -101,14 +101,15 @@ func (c *Client) do(ctx context.Context, r request) (*http.Response, error) {
 
 // parse reads and decodes a response: JSON into map[string]any /
 // []any, text/plain into int (if numeric) or string, empty bodies
-// (204 No Content) into nil. Non-2xx statuses become an *APIError.
+// (204 No Content) into nil. 4xx/5xx statuses become an *APIError
+// (3xx such as 304 Not Modified are not errors, mirroring requests).
 func parse(resp *http.Response) (any, error) {
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+	if resp.StatusCode >= 400 {
 		return nil, &APIError{
 			StatusCode: resp.StatusCode,
 			Status:     resp.Status,
@@ -162,7 +163,7 @@ func (c *Client) sendRaw(ctx context.Context, r request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+	if resp.StatusCode >= 400 {
 		return nil, &APIError{
 			StatusCode: resp.StatusCode,
 			Status:     resp.Status,

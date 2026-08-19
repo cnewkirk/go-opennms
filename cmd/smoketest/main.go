@@ -201,13 +201,18 @@ func first(fn func(limit int) (any, error), listKey, idKey string) (map[string]a
 	return item, item[idKey]
 }
 
-// toInt converts a decoded JSON number (float64) or int to int.
+// toInt converts a decoded JSON number (float64), int, or numeric
+// string to int — OpenNMS serializes some ids (e.g. node ids) as
+// strings.
 func toInt(v any) int {
 	switch x := v.(type) {
 	case float64:
 		return int(x)
 	case int:
 		return x
+	case string:
+		n, _ := strconv.Atoi(x)
+		return n
 	}
 	return 0
 }
