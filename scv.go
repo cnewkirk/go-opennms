@@ -8,8 +8,8 @@ import (
 )
 
 // GetCredentials lists all stored credentials.
-func (c *Client) GetCredentials(ctx context.Context) (map[string]any, error) {
-	return c.getObject(ctx, "scv", nil, false)
+func (c *Client) GetCredentials(ctx context.Context) ([]any, error) {
+	return c.getList(ctx, "scv", nil, false)
 }
 
 // GetCredential returns a specific credential by alias (the unique

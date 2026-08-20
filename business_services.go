@@ -103,8 +103,8 @@ func (c *Client) ReloadBusinessServiceDaemon(ctx context.Context) error {
 // Functions
 
 // GetMapFunctions lists all available map functions.
-func (c *Client) GetMapFunctions(ctx context.Context) ([]any, error) {
-	return c.getList(ctx, "business-services/functions/map", nil, true)
+func (c *Client) GetMapFunctions(ctx context.Context) (map[string]any, error) {
+	return c.getObject(ctx, "business-services/functions/map", nil, true)
 }
 
 // GetMapFunction returns a specific map function by name.
@@ -113,8 +113,8 @@ func (c *Client) GetMapFunction(ctx context.Context, name string) (map[string]an
 }
 
 // GetReduceFunctions lists all available reduce functions.
-func (c *Client) GetReduceFunctions(ctx context.Context) ([]any, error) {
-	return c.getList(ctx, "business-services/functions/reduce", nil, true)
+func (c *Client) GetReduceFunctions(ctx context.Context) (map[string]any, error) {
+	return c.getObject(ctx, "business-services/functions/reduce", nil, true)
 }
 
 // GetReduceFunction returns a specific reduce function by name.

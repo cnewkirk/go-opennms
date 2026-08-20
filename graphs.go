@@ -77,8 +77,8 @@ func (c *Client) GetGraphSearchResults(ctx context.Context, namespace, providerI
 // Hits the same path as GetGraphContainers but documents the expected
 // return type when the server is configured for prefab graphs (a list
 // of name strings).
-func (c *Client) GetPrefabGraphNames(ctx context.Context) ([]any, error) {
-	return c.getList(ctx, "graphs", nil, false)
+func (c *Client) GetPrefabGraphNames(ctx context.Context) (map[string]any, error) {
+	return c.getObject(ctx, "graphs", nil, false)
 }
 
 // GetPrefabGraph returns a specific prefab graph definition by name.

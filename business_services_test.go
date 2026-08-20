@@ -37,17 +37,17 @@ const businessServicesMapFunctionJSON = `{
 	"name": "Identity", "type": "Identity", "properties": {}
 }`
 
-const businessServicesMapFunctionsJSON = `[` +
+const businessServicesMapFunctionsJSON = `{"function": [` +
 	businessServicesMapFunctionJSON +
-	`, {"name": "Increase", "type": "Increase", "properties": {}}]`
+	`, {"name": "Increase", "type": "Increase", "properties": {}}]}`
 
 const businessServicesReduceFunctionJSON = `{
 	"name": "HighestSeverity", "type": "HighestSeverity", "properties": {}
 }`
 
-const businessServicesReduceFunctionsJSON = `[` +
+const businessServicesReduceFunctionsJSON = `{"function": [` +
 	businessServicesReduceFunctionJSON +
-	`, {"name": "Threshold", "type": "Threshold", "properties": {"threshold": "0.5"}}]`
+	`, {"name": "Threshold", "type": "Threshold", "properties": {"threshold": "0.5"}}]}`
 
 func TestGetBusinessServices(t *testing.T) {
 	mux, c := newTestClient(t)
@@ -261,8 +261,9 @@ func TestGetMapFunctions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result[0].(map[string]any)["name"] != "Identity" {
-		t.Errorf("name = %v", result[0])
+	fns := result["function"].([]any)
+	if fns[0].(map[string]any)["name"] != "Identity" {
+		t.Errorf("name = %v", fns[0])
 	}
 }
 
@@ -287,8 +288,9 @@ func TestGetReduceFunctions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result[0].(map[string]any)["name"] != "HighestSeverity" {
-		t.Errorf("name = %v", result[0])
+	fns := result["function"].([]any)
+	if fns[0].(map[string]any)["name"] != "HighestSeverity" {
+		t.Errorf("name = %v", fns[0])
 	}
 }
 

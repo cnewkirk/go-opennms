@@ -10,8 +10,6 @@ import (
 
 const emailNbiConfigJSON = `{"enabled": false, "destinations": []}`
 
-const emailNbiStatusJSON = `{"enabled": false}`
-
 const emailNbiDestinationJSON = `{
 	"name": "ops-team",
 	"firstOccurrenceOnly": true,
@@ -36,13 +34,13 @@ func TestGetEmailNbiConfig(t *testing.T) {
 
 func TestGetEmailNbiStatus(t *testing.T) {
 	mux, c := newTestClient(t)
-	handleJSON(mux, "GET "+v1Path+"/config/email-nbi/status", emailNbiStatusJSON)
+	handleText(mux, "GET "+v1Path+"/config/email-nbi/status", "false")
 	result, err := c.GetEmailNbiStatus(t.Context())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result["enabled"].(bool) != false {
-		t.Errorf("enabled = %v, want false", result["enabled"])
+	if result != "false" {
+		t.Errorf("status = %q, want false", result)
 	}
 }
 

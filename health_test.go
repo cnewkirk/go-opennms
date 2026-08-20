@@ -14,8 +14,6 @@ const healthJSON = `{
 	]
 }`
 
-const healthProbeJSON = `{"status": "Everything is awesome"}`
-
 func TestGetHealth(t *testing.T) {
 	mux, c := newTestClient(t)
 	handleJSON(mux, "GET "+v1Path+"/health", healthJSON)
@@ -41,12 +39,12 @@ func TestGetHealthWithTag(t *testing.T) {
 
 func TestGetHealthProbe(t *testing.T) {
 	mux, c := newTestClient(t)
-	handleJSON(mux, "GET "+v1Path+"/health/probe", healthProbeJSON)
+	handleText(mux, "GET "+v1Path+"/health/probe", "Everything is awesome")
 	result, err := c.GetHealthProbe(t.Context())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result["status"] != "Everything is awesome" {
-		t.Errorf("status = %v", result["status"])
+	if result != "Everything is awesome" {
+		t.Errorf("probe = %q", result)
 	}
 }

@@ -51,13 +51,14 @@ const alarmStatsSeverityMajorJSON = `{"severity": "MAJOR",
 const alarmStatsSeverityMinorJSON = `{"severity": "MINOR",
 	"totalCount": 4, "acknowledgedCount": 2, "unacknowledgedCount": 2}`
 
-const alarmStatsBySeverityJSON = `[` + alarmStatsSeverityCriticalJSON + `,
-	` + alarmStatsSeverityMajorJSON + `,
-	` + alarmStatsSeverityMinorJSON + `]`
-
-const alarmStatsBySeverityFilteredJSON = `[` +
+const alarmStatsBySeverityJSON = `{"alarmStatistics": [` +
 	alarmStatsSeverityCriticalJSON + `,
-	` + alarmStatsSeverityMajorJSON + `]`
+	` + alarmStatsSeverityMajorJSON + `,
+	` + alarmStatsSeverityMinorJSON + `]}`
+
+const alarmStatsBySeverityFilteredJSON = `{"alarmStatistics": [` +
+	alarmStatsSeverityCriticalJSON + `,
+	` + alarmStatsSeverityMajorJSON + `]}`
 
 func TestGetAlarmStats(t *testing.T) {
 	mux, c := newTestClient(t)
@@ -94,8 +95,9 @@ func TestGetAlarmStatsBySeverity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result[0].(map[string]any)["severity"] != "CRITICAL" {
-		t.Errorf("severity = %v, want CRITICAL", result[0])
+	stats := result["alarmStatistics"].([]any)
+	if stats[0].(map[string]any)["severity"] != "CRITICAL" {
+		t.Errorf("severity = %v, want CRITICAL", stats[0])
 	}
 }
 

@@ -18,6 +18,6 @@ func (c *Client) GetHealth(ctx context.Context, tag string) (map[string]any, err
 }
 
 // GetHealthProbe returns a simple health probe (up/down) response.
-func (c *Client) GetHealthProbe(ctx context.Context) (map[string]any, error) {
-	return c.getObject(ctx, "health/probe", nil, false)
+func (c *Client) GetHealthProbe(ctx context.Context) (string, error) {
+	return asString(c.get(ctx, "health/probe", nil, false))
 }

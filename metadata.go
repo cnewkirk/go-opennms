@@ -42,14 +42,14 @@ func (c *Client) metadataSet(ctx context.Context, path string, metadata []map[st
 
 // GetNodeMetadata returns all metadata for the node. nodeID is a node
 // database ID or "foreignSource:foreignId".
-func (c *Client) GetNodeMetadata(ctx context.Context, nodeID string) ([]any, error) {
-	return c.getList(ctx, metadataNodePath(nodeID), nil, true)
+func (c *Client) GetNodeMetadata(ctx context.Context, nodeID string) (map[string]any, error) {
+	return c.getObject(ctx, metadataNodePath(nodeID), nil, true)
 }
 
 // GetNodeMetadataContext returns all metadata for the node within the
 // given context.
-func (c *Client) GetNodeMetadataContext(ctx context.Context, nodeID, context string) ([]any, error) {
-	return c.getList(ctx, metadataNodePath(nodeID)+"/"+url.PathEscape(context), nil, true)
+func (c *Client) GetNodeMetadataContext(ctx context.Context, nodeID, context string) (map[string]any, error) {
+	return c.getObject(ctx, metadataNodePath(nodeID)+"/"+url.PathEscape(context), nil, true)
 }
 
 // GetNodeMetadataValue returns a specific metadata value for the node.
@@ -100,14 +100,14 @@ func (c *Client) DeleteNodeMetadataKey(ctx context.Context, nodeID, context, key
 
 // GetInterfaceMetadata returns all metadata for the interface
 // ipInterface on the node.
-func (c *Client) GetInterfaceMetadata(ctx context.Context, nodeID, ipInterface string) ([]any, error) {
-	return c.getList(ctx, metadataInterfacePath(nodeID, ipInterface), nil, true)
+func (c *Client) GetInterfaceMetadata(ctx context.Context, nodeID, ipInterface string) (map[string]any, error) {
+	return c.getObject(ctx, metadataInterfacePath(nodeID, ipInterface), nil, true)
 }
 
 // GetInterfaceMetadataContext returns metadata within the given
 // context for the interface.
-func (c *Client) GetInterfaceMetadataContext(ctx context.Context, nodeID, ipInterface, context string) ([]any, error) {
-	return c.getList(ctx, metadataInterfacePath(nodeID, ipInterface)+"/"+
+func (c *Client) GetInterfaceMetadataContext(ctx context.Context, nodeID, ipInterface, context string) (map[string]any, error) {
+	return c.getObject(ctx, metadataInterfacePath(nodeID, ipInterface)+"/"+
 		url.PathEscape(context), nil, true)
 }
 
@@ -161,14 +161,14 @@ func (c *Client) DeleteInterfaceMetadataKey(ctx context.Context, nodeID, ipInter
 
 // GetServiceMetadata returns all metadata for the service on
 // ipInterface of the node.
-func (c *Client) GetServiceMetadata(ctx context.Context, nodeID, ipInterface, service string) ([]any, error) {
-	return c.getList(ctx, metadataServicePath(nodeID, ipInterface, service), nil, true)
+func (c *Client) GetServiceMetadata(ctx context.Context, nodeID, ipInterface, service string) (map[string]any, error) {
+	return c.getObject(ctx, metadataServicePath(nodeID, ipInterface, service), nil, true)
 }
 
 // GetServiceMetadataContext returns metadata within the given context
 // for the service.
-func (c *Client) GetServiceMetadataContext(ctx context.Context, nodeID, ipInterface, service, context string) ([]any, error) {
-	return c.getList(ctx, metadataServicePath(nodeID, ipInterface, service)+"/"+
+func (c *Client) GetServiceMetadataContext(ctx context.Context, nodeID, ipInterface, service, context string) (map[string]any, error) {
+	return c.getObject(ctx, metadataServicePath(nodeID, ipInterface, service)+"/"+
 		url.PathEscape(context), nil, true)
 }
 

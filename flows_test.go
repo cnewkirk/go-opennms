@@ -21,7 +21,7 @@ const flowExporterJSON = `{
 	}
 }`
 
-const flowExporterListJSON = `{"exporters": [` + flowExporterJSON + `]}`
+const flowExporterListJSON = `[` + flowExporterJSON + `]`
 
 const flowApplicationsJSON = `{
 	"start": 1425580938256,
@@ -92,7 +92,7 @@ func TestGetFlowExporters(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	node := result["exporters"].([]any)[0].(map[string]any)["node"].(map[string]any)
+	node := result[0].(map[string]any)["node"].(map[string]any)
 	if node["id"].(float64) != 1 {
 		t.Errorf("node id = %v, want 1", node["id"])
 	}

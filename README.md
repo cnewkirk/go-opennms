@@ -146,6 +146,21 @@ Same coverage baseline as python-opennms: the Meridian 2025 REST API
 reference, working against Horizon 30+ and Meridian. See that repo's
 COVERAGE.md for the endpoint-by-endpoint status.
 
+Live-validated (full read + write smoke test, `cmd/smoketest`, zero
+failures) against:
+
+| Server | Result |
+|---|---|
+| Horizon 33.0.0 (oldest image still published) | 307 passed / 0 failed |
+| Meridian 2025 foundation (`foundation-2025`) | 311 passed / 0 failed |
+| Meridian 2026 foundation (`foundation-2026`) | 311 passed / 0 failed |
+| Horizon 36.0.3 (latest at validation time) | 311 passed / 0 failed |
+
+Warnings in those runs are plugin-dependent endpoints (Elasticsearch
+flows, alarm history, SVG maps, …) absent from a stock container.
+Compatibility below 33 rests on the request shapes being byte-for-byte
+ports of python-opennms, which documents Horizon 30+ support.
+
 ## Development
 
 ```bash

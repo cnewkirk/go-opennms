@@ -16,11 +16,11 @@ const metadataEntryJSON = `{
 	"value": "ansible-tower"
 }`
 
-const metadataListJSON = `[
+const metadataListJSON = `{"offset": 0, "count": 3, "totalCount": 3, "metaData": [
 	` + metadataEntryJSON + `,
 	{"context": "X-OpenNMS-System", "key": "environment", "value": "production"},
 	{"context": "requisition", "key": "category", "value": "Routers"}
-]`
+]}`
 
 const (
 	metadataNodeID = "1"
@@ -72,7 +72,7 @@ func TestGetNodeMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	entry := result[0].(map[string]any)
+	entry := result["metaData"].([]any)[0].(map[string]any)
 	if entry["context"] != metadataCtx {
 		t.Errorf("context = %v, want %s", entry["context"], metadataCtx)
 	}
@@ -93,8 +93,8 @@ func TestGetNodeMetadataContext(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result) != 3 {
-		t.Errorf("len = %d, want 3", len(result))
+	if entries := result["metaData"].([]any); len(entries) != 3 {
+		t.Errorf("len = %d, want 3", len(entries))
 	}
 	if req.path != metadataNodeBase+"/"+metadataCtx {
 		t.Errorf("path = %q", req.path)
@@ -201,8 +201,8 @@ func TestGetInterfaceMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result) != 3 {
-		t.Errorf("len = %d, want 3", len(result))
+	if entries := result["metaData"].([]any); len(entries) != 3 {
+		t.Errorf("len = %d, want 3", len(entries))
 	}
 	if req.path != metadataIfaceBase {
 		t.Errorf("path = %q", req.path)
@@ -218,8 +218,8 @@ func TestGetInterfaceMetadataContext(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result) != 3 {
-		t.Errorf("len = %d, want 3", len(result))
+	if entries := result["metaData"].([]any); len(entries) != 3 {
+		t.Errorf("len = %d, want 3", len(entries))
 	}
 	if req.path != metadataIfaceBase+"/"+metadataCtx {
 		t.Errorf("path = %q", req.path)
@@ -316,8 +316,8 @@ func TestGetServiceMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result) != 3 {
-		t.Errorf("len = %d, want 3", len(result))
+	if entries := result["metaData"].([]any); len(entries) != 3 {
+		t.Errorf("len = %d, want 3", len(entries))
 	}
 	if req.path != metadataSvcBase {
 		t.Errorf("path = %q", req.path)
@@ -333,8 +333,8 @@ func TestGetServiceMetadataContext(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result) != 3 {
-		t.Errorf("len = %d, want 3", len(result))
+	if entries := result["metaData"].([]any); len(entries) != 3 {
+		t.Errorf("len = %d, want 3", len(entries))
 	}
 	if req.path != metadataSvcBase+"/"+metadataCtx {
 		t.Errorf("path = %q", req.path)

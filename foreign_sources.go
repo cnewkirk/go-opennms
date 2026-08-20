@@ -6,7 +6,19 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strings"
 )
+
+// foreignSourcesEscape escapes each /-separated segment of a foreign
+// source name, preserving slashes so the "deployed/<name>" namespace
+// stays addressable (as it is in python-opennms).
+func foreignSourcesEscape(name string) string {
+	segments := strings.Split(name, "/")
+	for i, s := range segments {
+		segments[i] = url.PathEscape(s)
+	}
+	return strings.Join(segments, "/")
+}
 
 // Foreign sources
 
@@ -18,7 +30,7 @@ func (c *Client) GetForeignSources(ctx context.Context) (map[string]any, error) 
 
 // GetForeignSource returns a specific foreign source by name.
 func (c *Client) GetForeignSource(ctx context.Context, name string) (map[string]any, error) {
-	return c.getObject(ctx, "foreignSources/"+url.PathEscape(name), nil, false)
+	return c.getObject(ctx, "foreignSources/"+foreignSourcesEscape(name), nil, false)
 }
 
 // GetDefaultForeignSource returns the default foreign source
@@ -66,13 +78,13 @@ func (c *Client) UpdateForeignSource(ctx context.Context, name string, foreignSo
 	for k, v := range foreignSource {
 		form.Set(k, fmt.Sprint(v))
 	}
-	_, err := c.putForm(ctx, "foreignSources/"+url.PathEscape(name), form, nil, false)
+	_, err := c.putForm(ctx, "foreignSources/"+foreignSourcesEscape(name), form, nil, false)
 	return err
 }
 
 // DeleteForeignSource deletes a foreign source.
 func (c *Client) DeleteForeignSource(ctx context.Context, name string) error {
-	_, err := c.del(ctx, "foreignSources/"+url.PathEscape(name), nil, nil, false, "")
+	_, err := c.del(ctx, "foreignSources/"+foreignSourcesEscape(name), nil, nil, false, "")
 	return err
 }
 
@@ -80,13 +92,13 @@ func (c *Client) DeleteForeignSource(ctx context.Context, name string) error {
 
 // GetForeignSourceDetectors lists detectors for the foreign source.
 func (c *Client) GetForeignSourceDetectors(ctx context.Context, name string) (map[string]any, error) {
-	return c.getObject(ctx, "foreignSources/"+url.PathEscape(name)+"/detectors", nil, false)
+	return c.getObject(ctx, "foreignSources/"+foreignSourcesEscape(name)+"/detectors", nil, false)
 }
 
 // GetForeignSourceDetector returns a specific detector from the
 // foreign source.
 func (c *Client) GetForeignSourceDetector(ctx context.Context, name, detector string) (map[string]any, error) {
-	path := "foreignSources/" + url.PathEscape(name) + "/detectors/" + url.PathEscape(detector)
+	path := "foreignSources/" + foreignSourcesEscape(name) + "/detectors/" + url.PathEscape(detector)
 	return c.getObject(ctx, path, nil, false)
 }
 
@@ -100,14 +112,14 @@ func (c *Client) GetForeignSourceDetector(ctx context.Context, name, detector st
 //	    "parameter": []any{},
 //	}
 func (c *Client) AddForeignSourceDetector(ctx context.Context, name string, detector map[string]any) (map[string]any, error) {
-	path := "foreignSources/" + url.PathEscape(name) + "/detectors"
+	path := "foreignSources/" + foreignSourcesEscape(name) + "/detectors"
 	return asObject(c.post(ctx, path, detector, nil, false))
 }
 
 // DeleteForeignSourceDetector removes a detector from the foreign
 // source.
 func (c *Client) DeleteForeignSourceDetector(ctx context.Context, name, detector string) error {
-	path := "foreignSources/" + url.PathEscape(name) + "/detectors/" + url.PathEscape(detector)
+	path := "foreignSources/" + foreignSourcesEscape(name) + "/detectors/" + url.PathEscape(detector)
 	_, err := c.del(ctx, path, nil, nil, false, "")
 	return err
 }
@@ -116,13 +128,13 @@ func (c *Client) DeleteForeignSourceDetector(ctx context.Context, name, detector
 
 // GetForeignSourcePolicies lists policies for the foreign source.
 func (c *Client) GetForeignSourcePolicies(ctx context.Context, name string) (map[string]any, error) {
-	return c.getObject(ctx, "foreignSources/"+url.PathEscape(name)+"/policies", nil, false)
+	return c.getObject(ctx, "foreignSources/"+foreignSourcesEscape(name)+"/policies", nil, false)
 }
 
 // GetForeignSourcePolicy returns a specific policy from the foreign
 // source.
 func (c *Client) GetForeignSourcePolicy(ctx context.Context, name, policy string) (map[string]any, error) {
-	path := "foreignSources/" + url.PathEscape(name) + "/policies/" + url.PathEscape(policy)
+	path := "foreignSources/" + foreignSourcesEscape(name) + "/policies/" + url.PathEscape(policy)
 	return c.getObject(ctx, path, nil, false)
 }
 
@@ -138,13 +150,13 @@ func (c *Client) GetForeignSourcePolicy(ctx context.Context, name, policy string
 //	    },
 //	}
 func (c *Client) AddForeignSourcePolicy(ctx context.Context, name string, policy map[string]any) (map[string]any, error) {
-	path := "foreignSources/" + url.PathEscape(name) + "/policies"
+	path := "foreignSources/" + foreignSourcesEscape(name) + "/policies"
 	return asObject(c.post(ctx, path, policy, nil, false))
 }
 
 // DeleteForeignSourcePolicy removes a policy from the foreign source.
 func (c *Client) DeleteForeignSourcePolicy(ctx context.Context, name, policy string) error {
-	path := "foreignSources/" + url.PathEscape(name) + "/policies/" + url.PathEscape(policy)
+	path := "foreignSources/" + foreignSourcesEscape(name) + "/policies/" + url.PathEscape(policy)
 	_, err := c.del(ctx, path, nil, nil, false, "")
 	return err
 }

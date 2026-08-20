@@ -21,10 +21,10 @@ func (c *Client) GetAlarmStats(ctx context.Context, filters map[string]string) (
 // severity. severities optionally restricts the result to the given
 // severity strings, e.g. []string{"MAJOR", "CRITICAL"}; nil includes
 // all severities.
-func (c *Client) GetAlarmStatsBySeverity(ctx context.Context, severities []string) ([]any, error) {
+func (c *Client) GetAlarmStatsBySeverity(ctx context.Context, severities []string) (map[string]any, error) {
 	params := url.Values{}
 	if len(severities) > 0 {
 		params.Set("severities", strings.Join(severities, ","))
 	}
-	return c.getList(ctx, "stats/alarms/by-severity", params, false)
+	return c.getObject(ctx, "stats/alarms/by-severity", params, false)
 }
